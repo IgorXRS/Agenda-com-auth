@@ -1,0 +1,269 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotação APP</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .background-login{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(42, 0, 53);
+        }
+
+        .background-logado{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(42, 0, 53);
+        }
+
+        .login{
+            background: rgb(91, 2, 99);
+            width: 300px;
+            height: 250px;
+            display: block;
+            text-align: center;
+            padding-top: 50px;
+            border-radius: 20px;
+            box-shadow: 10px 5px 70px rgba(0, 0, 0, 0.644);
+        }
+        .container-login {
+            display: none;
+            background: rgb(91, 2, 99);
+            width: 700px;
+            height: auto;
+            text-align: center;
+            padding-top: 50px;
+            border-radius: 20px;
+            box-shadow: 10px 5px 70px rgba(0, 0, 0, 0.644);
+        }
+
+        h2{
+            color: white;
+        }
+
+        .text-input{
+            padding-left: 5px;
+            margin-bottom: 15px;
+            width: 200px;
+            height: 30px;
+        }
+
+        textarea:focus, input:focus, select:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+        }
+
+        .submit-input{
+            width: 90px;
+            height: 25px;
+            color: white;
+            background: rgb(40, 0, 43);
+            border: none;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .submit-input:hover{
+            outline: 1px solid white;
+            box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.644);
+        }
+
+        
+
+    </style>
+</head>
+<body>
+<div class="background-login">
+    <div class="login">
+        <h2>Agenda</h2>
+        <h5 style="color: rgba(194, 189, 189, 0.603); padding-bottom: 30px;">Faça login para acessar </br> sua agenda particular</h5>
+        <form class="login-form">
+            <input class="text-input" type="email" name="email" placeholder="E-mail"/>
+            <input class="text-input" type="password" name="password" placeholder="Senha"/>
+        </br>
+            <input class="submit-input" type="submit" name="acao" value="Logar!" />
+        </form><!--login-form-->
+    </div><!--login-->
+</div><!--background-login-->
+
+<div class="background-logado">
+    <div class="container-login">
+        <h2>Agenda Particular<a class="logout" href="javascript:void(0);">Logout</a></h2>
+        <form class="form-cadastro-tarefa">
+            <textarea name="tarefa"></textarea>
+            <input type="datetime-local" name="datetime" />
+            <input type="submit" name="acao" value="Cadastrar Tarefa" />
+        </form>
+        <div class="tarefas-usuario">
+            <h3>Listagem de tarefas atuais:</h3>
+            <ul id="tarefas"></ul>
+        </div>
+    </div><!--container-login-->
+</div><!--background-logado-->
+    
+
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+
+<script type="module">
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyBK0svcRvD6tDvCl2HAwpTyTAV9mLjnOBM",
+        authDomain: "cotacao-for.firebaseapp.com",
+        projectId: "cotacao-for",
+        storageBucket: "cotacao-for.appspot.com",
+        messagingSenderId: "81640818285",
+        appId: "1:81640818285:web:b7ef058d2dc2ffdca52164",
+        measurementId: "G-HLB64D6QGK"
+    };
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+
+// Começamos aqui
+
+var usuario = null;
+    
+var formLogin = document.querySelector('form.login-form');
+var btnLogout = document.querySelector('.logout');
+        
+formLogin.addEventListener('submit',(e)=>{
+    e.preventDefault();
+        let email = document.querySelector('[name=email]').value;
+        let password = document.querySelector('[name=password]').value;
+        //alert(email);
+        //alert(password);
+            
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in
+            usuario = userCredential.user;
+                
+            alert('Logado com sucesso! '+usuario.email);
+            document.querySelector('.login, .background-login').style.display = "none";
+            document.querySelector('.container-login').style.display = "block";
+
+            formLogin.reset();
+            
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+        });
+        });
+
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged((val)=>{
+
+    if(val){
+        usuario=val;
+        alert('Bem-vindo de volta '+ usuario.email);
+
+        document.querySelector('.login, .background-login').style.display = "none";
+        document.querySelector('.container-login').style.display = "block";
+
+        //Ouvir por mudanças no banco de dados.
+
+        db.collection('tarefas').where("horario","!=",null).onSnapshot((data)=>{
+            let list = document.querySelector('#tarefas');
+            list.innerHTML = "";
+            let tarefas = data.docs;
+            tarefas = tarefas.sort(function(a,b){
+                if(a.data().horario < b.data().horario)
+                    return -1;
+                else
+                    return +1;
+                })
+            tarefas.map((val)=>{
+                list.innerHTML+=`<li>${val.data().tarefa} <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)">(x)</a></li>`
+            })
+
+            var excluirTarefas = document.querySelectorAll('.excluir-btn');
+
+            excluirTarefas.forEach(element => {
+                element.addEventListener('click',function(e){
+                    e.preventDefault();
+                    let docId = element.getAttribute('tarefa-id');
+
+                    db.collection('tarefas').doc(docId).delete();
+                })
+            });
+        })
+    }
+})
+
+
+
+
+btnLogout.addEventListener('click',(e)=>{
+    e.preventDefault();
+
+        firebase.auth().signOut().then(() => {
+            usuario = null;
+            document.querySelector('.login').style.display = "block";
+            document.querySelector('.background-login').style.display = "Flex";
+            document.querySelector('.container-login').style.display = "none";
+                
+            alert('Deslogado');
+        }).catch((error) => {
+            // An error happened.
+        });
+})
+
+
+
+var formCadastro = document.querySelector('.form-cadastro-tarefa');
+
+    
+
+    formCadastro.addEventListener('submit',(e)=>{
+        e.preventDefault();
+       
+       let tarefa = document.querySelector('.form-cadastro-tarefa [name=tarefa]').value;
+       let dateTime = document.querySelector('.form-cadastro-tarefa [name=datetime]').value;
+
+       //Inserir e criar coleção caso não existe.
+
+       let dataAtual = new Date().getTime();
+       if(dataAtual > new Date(dateTime).getTime()){
+        alert('Você informou uma data no passado...')
+       }else if(tarefa == "" || dateTime == ""){
+            alert('Você não pode deixar os campos vázios...')
+       }else{
+            db.collection('tarefas').add({
+                tarefa: tarefa,
+                horario: new Date(dateTime).getTime(),
+                userId: usuario.uid
+            })
+            formCadastro.reset();
+            alert('Sua tarefa foi cadastrada com sucesso!')
+       }
+    })
+
+      
+        
+
+
+      </script>
+</body>
+</html>
