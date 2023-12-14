@@ -41,9 +41,9 @@
             display: none;
             background: rgb(91, 2, 99);
             width: 700px;
+            min-height: 500px;
             height: auto;
             text-align: center;
-            padding-top: 20px;
             border-radius: 20px;
             box-shadow: 10px 5px 70px rgba(0, 0, 0, 0.644);
         }
@@ -83,7 +83,7 @@
         .logout{
             position: relative;
             background-color: rgb(28, 0, 39);
-            left: 250px;
+            left: 180px;
             top: -30px;
             border-radius: 50%;
             padding: 10px;
@@ -92,9 +92,91 @@
         }
 
         .logout:hover{
-            color: white;
+            color: rgb(203, 0, 221);
+            font-weight: 600;
         }
 
+        #tarefas{
+            
+        }
+
+        .form-cadastro-tarefa{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+        }
+
+        textarea{
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 20px;
+            margin-top: 30px;
+            width: 400px;
+            height: 50px;
+            box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.644);
+        }
+
+        .Titulo_login{
+            padding-bottom: 20px;
+            padding-top: 20px;
+            color: rgb(203, 0, 221);
+            background: rgb(11, 0, 14);
+            border-radius: 20px 20px 0px 0px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            letter-spacing: 5px;
+            font-weight: 200;
+            padding-left: 50px;
+        }
+
+        #cadastrar{
+            background: rgb(11, 0, 14);
+            border: none;
+            color: rgb(203, 0, 221);
+            width: 200px;
+            height: 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            font-weight: 600;
+        }
+
+        #cadastrar:hover{
+            color: rgb(255, 255, 255);
+        }
+        
+        #datetime{
+            height: 30px;
+            width: 175px;
+            background-color: rgb(11, 0, 14);
+            border: none;
+            color: white;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="rgb(255, 255, 255)" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
+        background-position: 100% center;
+        background-repeat: no-repeat;
+        }
+
+        .tarefas-usuario{
+            display: flex;
+            text-align: justify;
+            padding-left: 50px;
+            color: white;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .excluir-btn{
+            color: white;
+            font-size: 15px;
+            transform: translateY(-50px);
+            justify-content: space-between;
+        }
+
+        
         
 
     </style>
@@ -115,11 +197,11 @@
 
 <div class="background-logado">
     <div class="container-login">
-        <h2>Agenda Particular<a class="logout" href="javascript:void(0);"><i class="bi bi-x-lg"></i></a></h2>
+        <h2 class="Titulo_login">AGENDA PARTICULAR<a class="logout" href="javascript:void(0);"><i class="bi bi-x-lg"></i></a></h2>
         <form class="form-cadastro-tarefa">
-            <textarea name="tarefa"></textarea>
-            <input type="datetime-local" name="datetime" />
-            <input type="submit" name="acao" value="Cadastrar Tarefa" />
+            <textarea placeholder="Digite sua tarefa..." name="tarefa"></textarea>
+            <div><input id="datetime" type="datetime-local" name="datetime" />
+            <input id="cadastrar" type="submit" name="acao" value="CADASTRAR" /></div>
         </form>
         <div class="tarefas-usuario">
             <h3>Listagem de tarefas atuais:</h3>
@@ -211,7 +293,7 @@ firebase.auth().onAuthStateChanged((val)=>{
                     return +1;
                 })
             tarefas.map((val)=>{
-                list.innerHTML+=`<li>${val.data().tarefa} <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)">(x)</a></li>`
+                list.innerHTML+=`<li>${val.data().tarefa} <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)"><i class="bi bi-trash"></i></a></li>`
             })
 
             var excluirTarefas = document.querySelectorAll('.excluir-btn');
