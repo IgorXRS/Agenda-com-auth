@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotação APP</title>
+    <title>Agenda Particular</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <style>
         *{
@@ -21,7 +21,7 @@
         .background-logado{
             width: 100%;
             height: 100%;
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             background: rgb(42, 0, 53);
@@ -162,8 +162,9 @@
         }
 
         .tarefas-usuario{
-            display: flex;
+            display: block;
             text-align: justify;
+            padding-top: 20px;
             padding-left: 50px;
             color: white;
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -172,8 +173,18 @@
         .excluir-btn{
             color: white;
             font-size: 15px;
-            transform: translateY(-50px);
+        }
+
+        #tarefas{
+            padding-top: 20px;
+            max-width: 300px;
+        }
+
+        #tarefas li{
+            display: flex;
             justify-content: space-between;
+            border-bottom: 1px solid;
+            margin-top: 5px;
         }
 
         
@@ -258,6 +269,7 @@ formLogin.addEventListener('submit',(e)=>{
             //alert('Logado com sucesso! '+usuario.email);
             document.querySelector('.login, .background-login').style.display = "none";
             document.querySelector('.container-login').style.display = "block";
+            document.querySelector('.background-logado').style.display = "flex";
 
             formLogin.reset();
             
@@ -279,6 +291,7 @@ firebase.auth().onAuthStateChanged((val)=>{
 
         document.querySelector('.login, .background-login').style.display = "none";
         document.querySelector('.container-login').style.display = "block";
+        document.querySelector('.background-logado').style.display = "flex";
 
         //Ouvir por mudanças no banco de dados.
 
@@ -320,7 +333,7 @@ btnLogout.addEventListener('click',(e)=>{
             usuario = null;
             document.querySelector('.login').style.display = "block";
             document.querySelector('.background-login').style.display = "Flex";
-            document.querySelector('.container-login').style.display = "none";
+            document.querySelector('.container-login, .background-logado').style.display = "none";
                 
            //alert('Deslogado');
         }).catch((error) => {
