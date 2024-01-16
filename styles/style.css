@@ -36,7 +36,7 @@ body{
 .container-login {
     display: none;
     background: rgb(91, 2, 99);
-    width: 80%;
+    width: 800px;
     height: auto;
     text-align: center;
     border-radius: 20px;
@@ -53,6 +53,8 @@ h2{
     width: 200px;
     height: 30px;
 }
+
+
 
 textarea:focus, input:focus, select:focus {
 box-shadow: 0 0 0 0;
@@ -76,11 +78,12 @@ outline: 0;
 }
 
 .logout{
-    position: absolute;
+    position: relative;
     background-color: rgb(28, 0, 39);
     border-radius: 50%;
     padding: 10px;
-    right: 8vw;
+    right: -235px;
+    top: -30px;
     transform: translateY(-40px);
     text-decoration: none;
     color: rgba(255, 255, 255, 0.527);
@@ -125,7 +128,7 @@ textarea{
     background: rgb(11, 0, 14);
     border: none;
     color: rgb(203, 0, 221);
-    width: 30vw;
+    width: 309px;
     height: 30px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -139,7 +142,7 @@ textarea{
 
 #datetime{
     height: 30px;
-    width: 30vw;
+    width: 309px;
     background-color: rgb(11, 0, 14);
     border: none;
     color: white;
@@ -185,4 +188,28 @@ background-repeat: no-repeat;
     color: rgba(255, 255, 255, 0.466);
     bottom: 120px;
     font-size: 12px;
+}
+
+@media only screen and (max-width: 1000px)  {
+
+    .container-login{
+        width: 80%;
+    }
+
+    #cadastrar{
+        width: 30vw;
+    }
+
+    #datetime{
+        width: 30vw;
+    }
+
+    .logout{
+        position: absolute;
+        right: 8vw;
+        top: inherit;
+        transform: translateY(-40px);
+    }
+    
+    
 }
