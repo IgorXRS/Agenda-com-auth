@@ -5,13 +5,12 @@
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
-    apiKey: "AIzaSyBK0svcRvD6tDvCl2HAwpTyTAV9mLjnOBM",
-    authDomain: "cotacao-for.firebaseapp.com",
-    projectId: "cotacao-for",
-    storageBucket: "cotacao-for.appspot.com",
-    messagingSenderId: "81640818285",
-    appId: "1:81640818285:web:b7ef058d2dc2ffdca52164",
-    measurementId: "G-HLB64D6QGK"
+    apiKey: "AIzaSyDYfY9VDXUesvt69QbAcZQqR7XNG_HAKVw",
+    authDomain: "agenda-com-auth.firebaseapp.com",
+    projectId: "agenda-com-auth",
+    storageBucket: "agenda-com-auth.appspot.com",
+    messagingSenderId: "270222464685",
+    appId: "1:270222464685:web:e03659575f88de647b1824"
 };
 
 // Initialize Firebase
@@ -77,7 +76,9 @@ if(val){
                 return +1;
             })
         tarefas.map((val)=>{
-            list.innerHTML+=`<li>${val.data().tarefa} <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)"><i class="bi bi-trash"></i></a></li>`
+            const horarioFormatado = new Date(val.data().horario).toLocaleString();
+
+            list.innerHTML+=`<li>${val.data().tarefa} - ${horarioFormatado} <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)"><i class="bi bi-trash"></i></a></li>`
         })
 
         var excluirTarefas = document.querySelectorAll('.excluir-btn');
