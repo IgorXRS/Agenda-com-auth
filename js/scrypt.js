@@ -65,7 +65,7 @@ if(val){
 
     //Ouvir por mudanças no banco de dados.
 
-    db.collection('tarefas').where("horario","!=",null).onSnapshot((data)=>{
+    db.collection('tarefas').where("userId","==", usuario.uid).onSnapshot((data)=>{
         let list = document.querySelector('#tarefas');
         list.innerHTML = "";
         let tarefas = data.docs;
