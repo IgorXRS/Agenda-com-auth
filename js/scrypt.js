@@ -78,7 +78,7 @@ if(val){
         tarefas.map((val)=>{
             const horarioFormatado = new Date(val.data().horario).toLocaleString();
 
-            list.innerHTML+=`<li>${val.data().tarefa} - ${horarioFormatado} <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)"><i class="bi bi-trash"></i></a></li>`
+            list.innerHTML+=`<li>${val.data().tarefa} <p>${horarioFormatado}</p> <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)"><i class="bi bi-trash"></i></a></li>`
         })
 
         var excluirTarefas = document.querySelectorAll('.excluir-btn');

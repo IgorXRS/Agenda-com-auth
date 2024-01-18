@@ -168,6 +168,11 @@ background-repeat: no-repeat;
 .excluir-btn{
     color: white;
     font-size: 15px;
+    margin-left: 10px;
+}
+
+p {
+    margin-left: auto;
 }
 
 #tarefas{
@@ -178,7 +183,6 @@ background-repeat: no-repeat;
 
 #tarefas li{
     display: flex;
-    justify-content: space-between;
     border-bottom: 1px solid;
     margin-top: 5px;
 }
