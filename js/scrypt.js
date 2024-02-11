@@ -81,6 +81,8 @@ if(val){
             list.innerHTML+=`<li>${val.data().tarefa} <p>${horarioFormatado}</p> <a tarefa-id="${val.id}" class="excluir-btn" href="javascript:void(0)"><i class="bi bi-trash"></i></a></li>`
         })
 
+        console.log(usuario);
+
         var excluirTarefas = document.querySelectorAll('.excluir-btn');
 
         excluirTarefas.forEach(element => {
